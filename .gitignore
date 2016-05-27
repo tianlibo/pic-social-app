@@ -14,6 +14,14 @@
 /tmp
 
 # Ignore database and secrets config.
+/config/database.yml
+/config/secrets.yml
+/config/config.yml
+
 config/database.yml
+
 config/secrets.yml
+
 config/config.yml
+
+*.yml
