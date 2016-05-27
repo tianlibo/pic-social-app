@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :pictures
 
   validates :name, presence: true
-  validates :email, uniqueness: { case_sensitive: false }, presence: true, format: { with: /\A([^@\s]+)@((?:[a-z0-9-]+\.)+[a-z]{2,})\z/i }
+  validates :email, uniqueness: { case_sensitive: false, message: "email has been used" }, presence: true, format: { with: /\A([^@\s]+)@((?:[a-z0-9-]+\.)+[a-z]{2,})\z/i , message: 'format is incorrect'}
 
   before_create :generate_access_token
 

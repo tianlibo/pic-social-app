@@ -3,12 +3,6 @@ module V1
     version 'v1', using: :path
     format :json
 
-    helpers do 
-      def logger
-        Users.logger
-      end
-    end
-
     helpers V1::Helpers
 
     resource :users  do 
@@ -20,10 +14,12 @@ module V1
         requires :password, type: String
       end
       post :create do 
-        logger.debug params
-        # @user = User.new  name: params[:name], email: params[:email], password: params[:password]
-        # @user.save
-        { result: 'create success'}
+        @user = User.new  name: params[:name], email: params[:email], password: params[:password]
+        if @user.save 
+          { code: 0, data: {access_toke: @user.access_token}}
+        else 
+          { code: 1, info: @user.errors.messages}
+        end
       end
 
       desc 'login'
@@ -35,10 +31,17 @@ module V1
         @user = User.where('lower(email) = lower(?)',params[:email]).first
         if @user && @user.authenticate(params[:password])
           @user.reset_access_token
-          { result: 'success'}
+          { code: 0, data: {access_toke: @user.access_token}}
         else
-          { result: 'failed'}
+          { code: 1, info: '账户或密码错误'}
         end
+      end
+
+      desc 'logout'
+      get :logout do 
+        authenticate!
+        current_user.reset_access_token
+        { code: 0 }
       end
 
       desc 'test the resource'
@@ -46,6 +49,5 @@ module V1
         { resource: 'users'}
       end
     end
-
   end
 end

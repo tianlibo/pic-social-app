@@ -3,34 +3,25 @@ module V1
     version 'v1', using: :path
     format :json
 
-    helpers do 
-      def logger
-        Pictures.logger
-      end
-    end
-
     helpers V1::Helpers
 
     resource :pictures  do 
       desc 'upload the picture'
       post :create do 
-        @picture = Picture.new path: params[:path]
-        begin
-          @picture.save
-        rescue => e
-          logger.debug e.message
-        end
+        authenticate!
+        @picture = Picture.new path: params[:path], user_id: current_user.id
+        
+        return { code: 1, info: '图片上传一场'} if !@picture.save
 
         #随机获取一张图片
-        # @picture = Picture.rand_picture_except(current_user.id)
-        @picture = Picture.rand_picture_except(1)
+        @picture = Picture.rand_picture_except(current_user.id)
         #随机生成一个接收者
-        # receiver = User.rand_recerver_except(current_user.id)
-        receiver = User.rand_recerver_except(1)
+        receiver = User.rand_recerver_except(current_user.id)
 
         @message = Message.new sender: current_user.id, receiver: receiver, picture_id: @picture_id
         @message.save
-        { path: @picture.path.thumb.url }
+
+        { code: 0, data:{path: @picture.path.thumb.url} }
       end
 
       desc 'test the interface'

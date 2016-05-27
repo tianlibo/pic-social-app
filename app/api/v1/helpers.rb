@@ -8,5 +8,9 @@ module V1
     def authenticate!
       error!('401 Unauthorized', 401) unless current_user
     end
+
+    def logger(message)
+      puts "this is logger : #{message}"
+    end
   end
 end
