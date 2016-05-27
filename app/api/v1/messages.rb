@@ -9,6 +9,11 @@ module V1
       get do
         authenticate!
         @messages = Message.without_read(current_user.id)
+
+        @messages.each do |message|
+          message.already_read
+        end
+
         { code:0, data: @messages.to_json}
       end
 
