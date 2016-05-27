@@ -11,7 +11,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
-/tmp
+
 
 # Ignore database and secrets config.
 /config/database.yml
