@@ -26,8 +26,9 @@ module V1
 
       desc 'test the interface'
       post :test do 
-        pust "xxxxx"
+        puts "xxxxx"
         puts params
+        puts "yyyy"
         @picture = Picture.new path: params[:path]        
         return { code: 1, info: '图片上传异常'} if !@picture.save
         { code: 0, data:{path: @picture.path.thumb.url} }
