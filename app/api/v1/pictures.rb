@@ -29,7 +29,11 @@ module V1
         puts "xxxxx"
         puts params
         puts "yyyy"
-        @picture = Picture.new path: params[:path]        
+        begin 
+          @picture = Picture.new path: params[:path]   
+        rescue e
+          logger e
+        end     
         return { code: 1, info: '图片上传异常'} if !@picture.save
         { code: 0, data:{path: @picture.path.thumb.url} }
       end
