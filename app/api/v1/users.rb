@@ -9,12 +9,12 @@ module V1
 
       desc 'create a new user'
       params do 
-        requires :name, type: String
+        # requires :name, type: String
         requires :email, type: String
         requires :password, type: String
       end
       post :create do 
-        @user = User.new  name: params[:name], email: params[:email], password: params[:password]
+        @user = User.new  email: params[:email], password: params[:password]
         if @user.save 
           { code: 0, data: {access_toke: @user.access_token}}
         else 
@@ -45,7 +45,17 @@ module V1
       end
 
       desc 'test the resource'
-      get :test do 
+      params do 
+        requires :user,type: Hash do 
+          requires :first_name, type: String
+          requires :last_name, type: String
+        end
+      end
+      post :test do 
+        { 'declared_parms' => declared(params) }
+        logger params
+        logger declared(params)
+        # @user = User.new declared(params).user
         { resource: 'users'}
       end
     end

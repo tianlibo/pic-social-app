@@ -26,14 +26,10 @@ module V1
 
       desc 'test the interface'
       post :test do 
-        puts "xxxxx"
-        puts params
-        puts "yyyy"
         begin 
           @picture = Picture.new path: params[:path]   
         rescue Exception => e
           logger e
-          puts e
         end     
         return { code: 1, info: '图片上传异常'} if !@picture.save
         { code: 0, data:{path: @picture.path.thumb.url} }
