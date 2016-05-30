@@ -53,8 +53,8 @@ module V1
       end
       post :test do 
         { 'declared_parms' => declared(params) }
-        logger params
-        logger declared(params)
+        logger.debug params
+        logger.debug declared(params)
         # @user = User.new declared(params).user
         { resource: 'users'}
       end

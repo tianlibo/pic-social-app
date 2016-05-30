@@ -9,8 +9,7 @@ module V1
       desc 'upload the picture'
       post :create do 
         authenticate!
-        @picture = Picture.new path: params[:path], user_id: current_user.id
-        
+        @picture = Picture.new path: params[:path], user_id: current_user.id 
         return { code: 1, info: '图片上传异常'} if !@picture.save
 
         #随机获取一张图片
@@ -29,7 +28,7 @@ module V1
         begin 
           @picture = Picture.new path: params[:path]   
         rescue Exception => e
-          logger e
+          logger.debug e
         end     
         return { code: 1, info: '图片上传异常'} if !@picture.save
         { code: 0, data:{path: @picture.path.thumb.url} }

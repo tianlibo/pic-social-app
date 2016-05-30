@@ -24,3 +24,4 @@ config/secrets.yml
 
 config/config.yml
 
+tmp/*
