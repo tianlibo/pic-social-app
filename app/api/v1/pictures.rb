@@ -31,8 +31,9 @@ module V1
         puts "yyyy"
         begin 
           @picture = Picture.new path: params[:path]   
-        rescue e
+        rescue Exception => e
           logger e
+          puts e
         end     
         return { code: 1, info: '图片上传异常'} if !@picture.save
         { code: 0, data:{path: @picture.path.thumb.url} }
