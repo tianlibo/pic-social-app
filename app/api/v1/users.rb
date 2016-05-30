@@ -16,7 +16,7 @@ module V1
       post :create do 
         @user = User.new  email: params[:email], password: params[:password]
         if @user.save 
-          { code: 0, data: {access_toke: @user.access_token}}
+          { code: 0, data: {access_token: @user.access_token}}
         else 
           { code: 1, info: @user.errors.messages}
         end
@@ -31,7 +31,7 @@ module V1
         @user = User.where('lower(email) = lower(?)',params[:email]).first
         if @user && @user.authenticate(params[:password])
           @user.reset_access_token
-          { code: 0, data: {access_toke: @user.access_token}}
+          { code: 0, data: {access_token: @user.access_token}}
         else
           { code: 1, info: '账户或密码错误'}
         end
