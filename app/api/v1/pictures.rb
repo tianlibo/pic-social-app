@@ -11,7 +11,7 @@ module V1
         authenticate!
         @picture = Picture.new path: params[:path], user_id: current_user.id
         
-        return { code: 1, info: '图片上传一场'} if !@picture.save
+        return { code: 1, info: '图片上传异常'} if !@picture.save
 
         #随机获取一张图片
         @picture = Picture.rand_picture_except(current_user.id)
@@ -25,8 +25,10 @@ module V1
       end
 
       desc 'test the interface'
-      get :test do 
-        { resource: 'pictures'}
+      post :test do 
+        @picture = Picture.new path: params[:path]        
+        return { code: 1, info: '图片上传异常'} if !@picture.save
+        { code: 0, data:{path: @picture.path.thumb.url} }
       end
     end
   end
