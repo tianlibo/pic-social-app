@@ -30,6 +30,9 @@ gem 'bcrypt', '~> 3.1.7', require: false
 #API
 gem 'grape'
 
+#admin
+gem 'activeadmin', github: 'activeadmin'
+
 
 #File upload
 gem 'carrierwave', '~> 0.9.0'
