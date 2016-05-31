@@ -5,6 +5,7 @@ class Picture < ActiveRecord::Base
 
   scope :others, -> (user_id) { where('user_id != ?',user_id)}
 
+  validates :path, presence: true
 
   class << self
     def rand_picture_except(user_id)

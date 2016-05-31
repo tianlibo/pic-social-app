@@ -10,7 +10,7 @@ module V1
       post :create do 
         authenticate!
         @picture = Picture.new path: params[:path], user_id: current_user.id 
-        return { code: 1, info: '图片上传异常'} if !@picture.save
+        return { code: 1, info: @picture.errors.messages} if !@picture.save
 
         #随机获取一张图片
         @picture = Picture.rand_picture_except(current_user.id)
@@ -30,7 +30,13 @@ module V1
         rescue Exception => e
           logger.debug e
         end     
-        return { code: 1, info: '图片上传异常'} if !@picture.save
+        return { code: 1, info: @picture.errors.messages} if !@picture.save
+        { code: 0, data:{path: @picture.path.thumb.url} }
+      end
+
+      desc 'get picture'
+      get :one do 
+        @picture = Picture.rand_picture_except(1)
         { code: 0, data:{path: @picture.path.thumb.url} }
       end
     end
